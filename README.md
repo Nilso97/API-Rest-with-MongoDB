@@ -1,5 +1,4 @@
-## API Rest com <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg" width="90px" height="90px"/>
-          
+## API Rest com <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg" width="90px" height="90px" /><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain.svg" width="90px" height="50px" />
           
 API Rest desenvolvida em Node.js conectada ao Banco de dados NoSQL - MongoDB.
 
