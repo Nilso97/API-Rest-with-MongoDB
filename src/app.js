@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const CONNECTION_URL = 'mongodb://localhost:27017';
@@ -15,7 +14,25 @@ app.use(bodyParser.urlencoded({
 
 let database, collection;
 
-/**POST*/
+// CONNECTION WITH MONGODB
+app.listen(3333, () => {
+    MongoClient.connect(CONNECTION_URL, {
+        useNewUrlParser: true
+    }, (err, client) => {
+        if (err) {
+            throw err;
+        }
+
+        database = client.db(DATABASE_NAME);
+        console.log(`Connected with MongoDB at ${CONNECTION_URL}`);
+        console.log(`Database name: ${DATABASE_NAME}`);
+
+        client.close();
+    });
+});
+
+
+// ADD users
 app.post('/users', (req, res) => {
     collection.insert(req.body, (err, result) => {
         if (err) {
@@ -25,7 +42,7 @@ app.post('/users', (req, res) => {
     });
 });
 
-/**GET*/
+// LIST ALL users
 app.get('/users', (req, res) => {
     collection.find({}).toArray((err, result) => {
         if (err) {
@@ -35,7 +52,7 @@ app.get('/users', (req, res) => {
     });
 });
 
-/**GET*/
+// LIST ONLY ONE user BY ID
 app.get('/users/:id', (req, res) => {
     collection.findOne({
         '_id': new ObjectId(req.params.id)
@@ -47,18 +64,26 @@ app.get('/users/:id', (req, res) => {
     });
 });
 
-// Connection with MongoDB
-app.listen(3333, () => {
-    MongoClient.connect(CONNECTION_URL, {
-        useNewUrlParser: true
-    }, (err, client) => {
+// UPDATE user USING FIRST NAME SEARCH
+app.path('/users/:firstname', (req, res) => {
+    collection.updateOne({
+        'firstname': req.params.firstname
+    }, (err, result) => {
         if (err) {
-            throw err;
+            return res.status(500).send(err);
         }
-        database = client.db(DATABASE_NAME);
-        console.log(`connected MongoDB at server: ${CONNECTION_URL}`);
-        console.log(`database name: ${DATABASE_NAME}`);
+        return res.send(result);
+    });
+});
 
-        client.close();
+// DELETE user USING FIRST NAME SEARCH
+app.delete('/users/:firstname', (req, res) => {
+    collection.deleteOne({
+        'firstname': req.params.firstname
+    }, (err, result) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        return res.send(result);
     });
 });
