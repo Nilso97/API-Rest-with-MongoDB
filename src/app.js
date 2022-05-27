@@ -65,7 +65,7 @@ app.get('/users/:id', (req, res) => {
 });
 
 // UPDATE user USING FIRST NAME SEARCH
-app.path('/users/:firstname', (req, res) => {
+app.patch('/users/:firstname', (req, res) => {
     collection.updateOne({
         'firstname': req.params.firstname
     }, (err, result) => {
